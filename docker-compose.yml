@@ -1,0 +1,55 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: trionix-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - trionix-net
+
+  api:
+    build: .
+    container_name: trionix-api
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/trionixgear
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - trionix-net
+
+  tunnel:
+    image: cloudflare/cloudflared:2024.10.0
+    container_name: trionix-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://api:3000
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - trionix-net
+
+volumes:
+  mongo-data:
+
+networks:
+  trionix-net:
+    driver: bridge

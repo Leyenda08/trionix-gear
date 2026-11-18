@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trionix Gear - Gestión de Equipos</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <div class="app-window">
+    
+    <!-- CABECERA -->
+    <header>
+      <h1>Trionix Gear - Gestión de Equipos</h1>
+    </header>
+    
+    <!-- MENÚ DE NAVEGACIÓN -->
+    <nav>
+      <button type="button" onclick="cambiarVista('inventario')" class="active">Inventario</button>
+      <button type="button" onclick="cambiarVista('usuarios')">Usuarios</button>
+      <button type="button" onclick="cambiarVista('prestamos')">Préstamos</button>
+      <button type="button" onclick="cambiarVista('resumen')">Resumen</button>
+    </nav>
+
+    <!-- CONTENEDOR DE LAS VISTAS -->
+    <div class="container">
+      
+      <!-- VISTA 1: INVENTARIO -->
+      <section id="inventario" class="vista activa">
+        <h2>Inventario</h2>
+        <div class="card-form">
+          <form id="form-equipo">
+            <div class="form-group">
+              <label for="eq-codigo">Código</label>
+              <input type="text" id="eq-codigo" placeholder="EQ-0001" pattern="^EQ-[0-9]{4}$" title="Formato requerido: EQ-0001" required>
+            </div>
+            <div class="form-group">
+              <label for="eq-nombre">Nombre del equipo</label>
+              <input type="text" id="eq-nombre" placeholder="Ej. Laptop Dell Latitude" minlength="3" maxlength="100" required>
+            </div>
+            <div class="form-group">
+              <label for="eq-categoria">Categoría</label>
+              <select id="eq-categoria" required>
+                <option value="">Seleccione...</option>
+                <option value="portatil">Portátil</option>
+                <option value="proyector">Proyector</option>
+                <option value="camara">Cámara</option>
+                <option value="audio">Audio</option>
+                <option value="redes">Redes</option>
+              </select>
+            </div>
+            <button type="submit" class="btn">Agregar Equipo</button>
+          </form>
+        </div>
+
+        <table id="tabla-equipos">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- VISTA 2: USUARIOS -->
+      <section id="usuarios" class="vista">
+        <h2>Usuarios</h2>
+        <div class="card-form">
+          <form id="form-usuario">
+            <div class="form-group">
+              <label for="usr-nombre">Nombre completo</label>
+              <input type="text" id="usr-nombre" placeholder="Ej. Ana Gómez" minlength="3" maxlength="100" required>
+            </div>
+            <div class="form-group">
+              <label for="usr-doc">Documento</label>
+              <input type="text" id="usr-doc" inputmode="numeric" pattern="^[0-9]{6,12}$" title="Entre 6 y 12 dígitos numéricos" placeholder="Número de documento" required>
+            </div>
+            <div class="form-group">
+              <label for="usr-email">Correo electrónico</label>
+              <input type="email" id="usr-email" placeholder="correo@institucion.edu" required>
+            </div>
+            <div class="form-group">
+              <label for="usr-tipo">Rol / Tipo</label>
+              <select id="usr-tipo" required>
+                <option value="">Seleccione...</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="docente">Docente</option>
+                <option value="administrativo">Administrativo</option>
+              </select>
+            </div>
+            <button type="submit" class="btn">Agregar Usuario</button>
+          </form>
+        </div>
+
+        <table id="tabla-usuarios">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Documento</th>
+              <th>Tipo</th>
+              <th>Activo</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- VISTA 3: PRÉSTAMOS -->
+      <section id="prestamos" class="vista">
+        <h2>Préstamos</h2>
+        <div class="card-form">
+          <form id="form-prestamo">
+            <div class="form-group">
+              <label for="prest-equipo">Equipo disponible</label>
+              <select id="prest-equipo" required>
+                <option value="">Cargando equipos...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="prest-usuario">Usuario solicitante</label>
+              <select id="prest-usuario" required>
+                <option value="">Cargando usuarios...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="prest-fecha">Fecha límite de devolución</label>
+              <input type="date" id="prest-fecha" required>
+            </div>
+            <button type="submit" class="btn">Realizar Préstamo</button>
+          </form>
+        </div>
+
+        <table id="tabla-prestamos">
+          <thead>
+            <tr>
+              <th>Equipo</th>
+              <th>Usuario</th>
+              <th>Fecha Límite</th>
+              <th>Estado</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- VISTA 4: RESUMEN (Reportes) -->
+      <section id="resumen" class="vista">
+        <h2>Resumen y Reportes</h2>
+
+        <div class="kpi-grid" id="kpi-container"></div>
+
+        <h3>Desglose por Estado y Tipo de Usuario</h3>
+        <div class="kpi-grid" id="desglose-container"></div>
+
+        <h3>Top Equipos Más Prestados</h3>
+        <table id="tabla-top">
+          <thead>
+            <tr>
+              <th>Posición</th>
+              <th>Código</th>
+              <th>Equipo</th>
+              <th>Total Préstamos</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+    </div>
+
+    <!-- RELOJ DIGITAL FLOTANTE -->
+    <div class="clock-widget">
+      <span id="reloj-digital">00:00:00</span>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIONES FLOTANTES (TOAST) -->
+  <div id="toast" class="toast"></div>
+  
+  <script src="/js/app.js"></script>
+</body>
+</html>
+```
