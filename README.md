@@ -1,6 +1,6 @@
 # Trionix Gear - Sistema de Préstamo de Equipos
 
-**Estudiante:** JESUS DAVID HERNANDEZ B
+**Estudiante:** JESUS(alias teen snake o leyenda)
 
 ## Descripción
 Aplicación web para gestionar el inventario y los préstamos de equipos de Trionix Labs. Construida con Node.js, Express, MongoDB (Mongoose) y validación Joi. Desplegada usando Docker Compose y expuesta a internet con Cloudflare Tunnel.
