@@ -14,3 +14,5 @@ Aplicación web para gestionar el inventario y los préstamos de equipos de Trio
 3. Levantar los servicios:
    ```bash
    docker compose up -d --build
+Local: http://localhost:3000   
+Túnel público: docker logs trionix-tunnel para obtener la URL de Cloudflare.
